@@ -1,38 +1,26 @@
 import Headline from "./components/contactHeadline/Headline";
+import ContactList from "./components/contacts/ContactList";
+import GridItem from "./components/gridItem/GridItem";
 
 function App() {
   return (
-    <div className="">
-      <div className="grid grid-cols-[20%_60%_20%] grid-rows-[10vh_10vh_80vh]  min-h-full">
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">1</h2>
-        </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">2</h2>
-        </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">3</h2>
-        </div>
+    <div>
+      <div className="grid grid-cols-[20%_60%_20%] grid-rows-[10vh_10vh_80vh] min-h-full bg-black">
+        <GridItem>1</GridItem>
+        <GridItem>2</GridItem>
+        <GridItem>3</GridItem>
 
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">1</h2>
-        </div>
-        <div className="border">
+        <GridItem>1</GridItem>
+        <div className="border border-[#2D2D2D]">
           <Headline />
         </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">3</h2>
-        </div>
+        <GridItem>3</GridItem>
 
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">1</h2>
+        <GridItem>1</GridItem>
+        <div className="border border-[#2D2D2D] p-4">
+          <ContactList />
         </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">2</h2>
-        </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">3</h2>
-        </div>
+        <GridItem>3</GridItem>
       </div>
     </div>
   );
