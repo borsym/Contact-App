@@ -1,6 +1,6 @@
+import Headline from "./components/contactHeadline/Headline";
 
 function App() {
-
   return (
     <div className="">
       <div className="grid grid-cols-[20%_60%_20%] grid-rows-[10vh_10vh_80vh]  min-h-full">
@@ -17,8 +17,8 @@ function App() {
         <div className="border p-4">
           <h2 className="text-lg font-bold">1</h2>
         </div>
-        <div className="border p-4">
-          <h2 className="text-lg font-bold">2</h2>
+        <div className="border">
+          <Headline />
         </div>
         <div className="border p-4">
           <h2 className="text-lg font-bold">3</h2>
@@ -35,12 +35,7 @@ function App() {
         </div>
       </div>
     </div>
-
-
-
-
-
-  )
+  );
 }
 
-export default App
+export default App;
