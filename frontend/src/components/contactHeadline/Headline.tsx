@@ -4,7 +4,7 @@ import Button from "../button/Button";
 const Headline: React.FC = () => {
   return (
     <div className="flex justify-between items-center p-4 w-full h-full">
-      <div className="text-3xl">Contacts</div>
+      <div className="text-3xl text-white">Contacts</div>
 
       <div className="flex items-center space-x-4">
         <button className="">
