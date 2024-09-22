@@ -1,12 +1,15 @@
 package com.contact.list.backend.controller;
 
+import com.contact.list.backend.dto.ContactDTO;
 import com.contact.list.backend.model.ContactEntity;
-import com.contact.list.backend.service.ContactService;
+import com.contact.list.backend.service.imp.ContactServiceImp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,23 +17,24 @@ import java.util.UUID;
 @RequestMapping("/api/v1/contacts")
 @RequiredArgsConstructor
 public class ContactController {
-    private final ContactService contactService;
+    private final ContactServiceImp contactService;
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<ContactEntity>> getContactsByUserId(@PathVariable UUID userId) {
-        List<ContactEntity> contacts = contactService.getContactsByUserId(userId);
+    public ResponseEntity<List<ContactDTO>> getContactsByUserId(@PathVariable UUID userId) {
+        List<ContactDTO> contacts = contactService.getContactsByUserId(userId);
         return ResponseEntity.ok(contacts);
     }
-
-    @PostMapping("/users/{userId}")
-    public ResponseEntity<ContactEntity> createContact(@PathVariable UUID userId, @RequestBody ContactEntity contact) {
-        ContactEntity createdContact = contactService.createContact(userId, contact);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdContact);
+    @PostMapping(value = "/users/{userId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ContactEntity> createContact(@PathVariable UUID userId,
+                                                 @RequestPart("file") MultipartFile file,
+                                                 @RequestPart("contact") ContactEntity contact) throws IOException {
+        ContactEntity createdContact = contactService.createContact(userId, contact, file); // Save contact
+        return ResponseEntity.ok(createdContact);
     }
 
-    @PutMapping("/{contactId}")
-    public ResponseEntity<ContactEntity> updateContact(@PathVariable UUID contactId, @RequestBody ContactEntity contactDetails) {
-        ContactEntity updatedContact = contactService.updateContact(contactId, contactDetails);
+    @PutMapping(value = "/{contactId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ContactEntity> updateContact(@PathVariable UUID contactId, @RequestPart("file") MultipartFile file, @RequestPart("contact") ContactEntity contact) throws IOException {
+        ContactEntity updatedContact = contactService.updateContact(contactId, contact, file);
         return ResponseEntity.ok(updatedContact);
     }
 
