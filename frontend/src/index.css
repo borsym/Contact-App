@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-default {
+  background-color: #282828;
+}
+.hover\:bg-default-hover:hover {
+  background-color: #2d2d2d;
+}
+.active\:bg-default-pressed:active {
+  background-color: #323232;
+}
+
+.bg-secondary {
+  background-color: #000000;
+}
+.hover\:bg-secondary-hover:hover {
+  background-color: #191919;
+}
+.active\:bg-secondary-pressed:active {
+  background-color: #1e1e1e;
+}
+
+.bg-special {
+  background: linear-gradient(0deg, #141414, #141414),
+    linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%);
+  border-radius: 1000px;
+}
+.hover\:bg-special-hover:hover {
+  background: linear-gradient(0deg, #141414, #141414),
+    linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04));
+}
+.active\:bg-special-pressed:active {
+  background: linear-gradient(0deg, #141414, #141414),
+    linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04));
+}
