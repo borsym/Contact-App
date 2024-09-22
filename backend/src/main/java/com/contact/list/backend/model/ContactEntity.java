@@ -18,10 +18,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "contacts")
-public class Contact extends Person {
+public class ContactEntity extends PersonEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
-    private User user;
+    private UserEntity user;
 }

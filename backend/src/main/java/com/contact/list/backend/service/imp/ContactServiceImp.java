@@ -1,7 +1,7 @@
 package com.contact.list.backend.service.imp;
 
-import com.contact.list.backend.model.Contact;
-import com.contact.list.backend.model.User;
+import com.contact.list.backend.model.ContactEntity;
+import com.contact.list.backend.model.UserEntity;
 import com.contact.list.backend.repository.ContactRepository;
 import com.contact.list.backend.repository.UserRepository;
 import com.contact.list.backend.service.ContactService;
@@ -21,29 +21,29 @@ public class ContactServiceImp implements ContactService {
     private final UserRepository userRepository;
 
     @Override
-    public Contact createContact(UUID userId, Contact contact) {
-        User user = userRepository.findById(userId)
+    public ContactEntity createContact(UUID userId, ContactEntity contact) {
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         contact.setUser(user);
         return contactRepository.save(contact);
     }
 
     @Override
-    public List<Contact> getContactsByUserId(UUID userId) {
+    public List<ContactEntity> getContactsByUserId(UUID userId) {
         return contactRepository.findByUserId(userId);
     }
 
     @Override
-    public Contact getContactById(UUID contactId) {
+    public ContactEntity getContactById(UUID contactId) {
         return contactRepository.findById(contactId)
                 .orElseThrow(() -> new RuntimeException("Contact not found"));
     }
 
     @Override
-    public Contact updateContact(UUID contactId, Contact contactDetails) {
-        Contact existingContact = getContactById(contactId);
+    public ContactEntity updateContact(UUID contactId, ContactEntity contactDetails) {
+        ContactEntity existingContact = getContactById(contactId);
 
-        Contact updatedContact = Contact.builder()
+        ContactEntity updatedContact = ContactEntity.builder()
                 .id(existingContact.getId())
                 .name(contactDetails.getName())
                 .email(contactDetails.getEmail())

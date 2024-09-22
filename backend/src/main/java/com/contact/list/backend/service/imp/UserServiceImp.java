@@ -1,6 +1,6 @@
 package com.contact.list.backend.service.imp;
 
-import com.contact.list.backend.model.User;
+import com.contact.list.backend.model.UserEntity;
 import com.contact.list.backend.repository.UserRepository;
 import com.contact.list.backend.service.UserService;
 import jakarta.transaction.Transactional;
@@ -18,24 +18,24 @@ public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User getUserById(UUID id) {
+    public UserEntity getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
-    public User createUser(User user) {
+    public UserEntity createUser(UserEntity user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(UUID userId, User userDetails) {
-        User existingUser = getUserById(userId);
-        User updatedUser = User.builder()
+    public UserEntity updateUser(UUID userId, UserEntity userDetails) {
+        UserEntity existingUser = getUserById(userId);
+        UserEntity updatedUser = UserEntity.builder()
                 .id(existingUser.getId())
                 .name(userDetails.getName())
                 .email(userDetails.getEmail())
