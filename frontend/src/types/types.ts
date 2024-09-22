@@ -16,6 +16,7 @@ export interface ContactProps {
   id: string;
   name: string;
   phoneNumber: string;
+  email: string;
   imgUrl: string;
   hoverButtons?: Array<{
     label?: string;
@@ -30,5 +31,11 @@ export interface ContactProps {
 }
 
 export interface GridItemProps {
+  children: React.ReactNode;
+}
+
+export interface ModalProps {
+  onClose: () => void;
+  title: string;
   children: React.ReactNode;
 }
