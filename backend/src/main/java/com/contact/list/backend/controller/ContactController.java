@@ -1,6 +1,6 @@
 package com.contact.list.backend.controller;
 
-import com.contact.list.backend.model.Contact;
+import com.contact.list.backend.model.ContactEntity;
 import com.contact.list.backend.service.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,20 +17,20 @@ public class ContactController {
     private final ContactService contactService;
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<Contact>> getContactsByUserId(@PathVariable UUID userId) {
-        List<Contact> contacts = contactService.getContactsByUserId(userId);
+    public ResponseEntity<List<ContactEntity>> getContactsByUserId(@PathVariable UUID userId) {
+        List<ContactEntity> contacts = contactService.getContactsByUserId(userId);
         return ResponseEntity.ok(contacts);
     }
 
     @PostMapping("/users/{userId}")
-    public ResponseEntity<Contact> createContact(@PathVariable UUID userId, @RequestBody Contact contact) {
-        Contact createdContact = contactService.createContact(userId, contact);
+    public ResponseEntity<ContactEntity> createContact(@PathVariable UUID userId, @RequestBody ContactEntity contact) {
+        ContactEntity createdContact = contactService.createContact(userId, contact);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdContact);
     }
 
     @PutMapping("/{contactId}")
-    public ResponseEntity<Contact> updateContact(@PathVariable UUID contactId, @RequestBody Contact contactDetails) {
-        Contact updatedContact = contactService.updateContact(contactId, contactDetails);
+    public ResponseEntity<ContactEntity> updateContact(@PathVariable UUID contactId, @RequestBody ContactEntity contactDetails) {
+        ContactEntity updatedContact = contactService.updateContact(contactId, contactDetails);
         return ResponseEntity.ok(updatedContact);
     }
 

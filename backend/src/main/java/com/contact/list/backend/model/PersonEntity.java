@@ -15,7 +15,7 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person {
+public class PersonEntity {
 
     @Id
     @Column(updatable = false, nullable = false, unique = true)

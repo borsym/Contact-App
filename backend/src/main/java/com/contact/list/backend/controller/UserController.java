@@ -1,6 +1,6 @@
 package com.contact.list.backend.controller;
 
-import com.contact.list.backend.model.User;
+import com.contact.list.backend.model.UserEntity;
 import com.contact.list.backend.service.imp.UserServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,8 @@ public class UserController {
     private final UserServiceImp userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        List<UserEntity> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
+        UserEntity createdUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 }
