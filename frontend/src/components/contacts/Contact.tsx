@@ -3,19 +3,28 @@ import { ContactProps } from "../../types/types";
 import { MoreIcon } from "../../assets/icons/Icons";
 import Button from "../button/Button";
 import React from "react";
+import { useModalContext } from "../../context/ModalContext";
 
 const Contact: React.FC<ContactProps> = ({
   id,
   name,
   phoneNumber,
   imgUrl,
+  email,
   hoverButtons = [],
   menuOptions = [],
 }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const { openModal } = useModalContext();
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleEdit = () => {
+    openModal({ id, name, phoneNumber, imgUrl, email });
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -61,7 +70,7 @@ const Contact: React.FC<ContactProps> = ({
                   {menuOptions.map((option, index) => (
                     <li
                       key={index}
-                      onClick={option.action}
+                      onClick={option.label === "Edit" ? handleEdit : option.action}
                       className="px-4 py-2 hover:bg-[#282828] cursor-pointer flex items-center"
                     >
                       {option.icon}
