@@ -6,3 +6,7 @@ export interface ButtonProps {
   icon?: React.ReactNode;
   variant?: ButtonVariant;
 }
+
+export interface IconsProps {
+  fill?: string;
+}
