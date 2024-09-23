@@ -9,7 +9,7 @@ const fetchUsers = async () => {
 
 const addUser = async (newUser: any) => {
   const formData = new FormData();
-  formData.append("file", newUser.MyImage);
+  formData.append("file", newUser.imgUrl);
   formData.append(
     "user",
     new Blob(
@@ -33,7 +33,7 @@ const addUser = async (newUser: any) => {
 
 const updateUser = async (updatedUser: any) => {
   const formData = new FormData();
-  formData.append("file", updatedUser.MyImage);
+  formData.append("file", updatedUser.imgUrl);
   formData.append(
     "user",
     JSON.stringify({

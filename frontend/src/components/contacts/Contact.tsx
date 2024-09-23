@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ContactProps } from "../../types/types";
 import { MoreIcon } from "../../assets/icons/Icons";
-import Button from "../button/Button";
+import Button from "../common/button/Button";
 import React from "react";
 import { useModalContext } from "../../context/ModalContext";
 
@@ -70,7 +70,9 @@ const Contact: React.FC<ContactProps> = ({
                   {menuOptions.map((option, index) => (
                     <li
                       key={index}
-                      onClick={option.label === "Edit" ? handleEdit : option.action}
+                      onClick={
+                        option.label === "Edit" ? handleEdit : option.action
+                      }
                       className="px-4 py-2 hover:bg-[#282828] cursor-pointer flex items-center"
                     >
                       {option.icon}

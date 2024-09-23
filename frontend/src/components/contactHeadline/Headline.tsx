@@ -1,6 +1,6 @@
 import { PlusIcon, SettingsIcon } from "../../assets/icons/Icons";
 import { useModalContext } from "../../context/ModalContext";
-import Button from "../button/Button";
+import Button from "../common/button/Button";
 import ContactForm from "../modal/ContactForm";
 import Modal from "../modal/Modal";
 
