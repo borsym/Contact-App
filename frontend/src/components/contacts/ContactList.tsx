@@ -9,6 +9,7 @@ import { useModalContext } from "../../context/ModalContext";
 import { useContacts } from "../../hooks/useContacts";
 import { UserProps } from "../../types/types";
 import Contact from "./Contact";
+import React from "react";
 
 const hoverButtons = [
   { icon: <MuteIcon />, action: () => console.log("Mute") },

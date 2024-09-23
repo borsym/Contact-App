@@ -1,5 +1,5 @@
-import React from "react";
 import { GridItemProps } from "../../types/types";
+import React from "react";
 
 const GridItem: React.FC<GridItemProps> = ({ children }) => (
   <div className="border border-[#2D2D2D] p-4">

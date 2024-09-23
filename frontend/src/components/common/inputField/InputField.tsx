@@ -1,5 +1,6 @@
 import { FieldApi } from "@tanstack/react-form";
 import { InputFieldProps } from "../../../types/types";
+import React from "react";
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -37,6 +38,7 @@ const CustomInputField: React.FC<InputFieldProps> = ({
             </label>
             <input
               placeholder={placeholder}
+              id={name}
               type={type}
               value={field.state.value}
               onBlur={field.handleBlur}

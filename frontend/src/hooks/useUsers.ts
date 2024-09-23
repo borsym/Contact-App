@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { BASE_URL, instance } from "../utilts";
+import { instance } from "../utilts";
 import { UserProps } from "../types/types";
-import axios from "axios";
 
 const fetchUsers = async () => {
   const { data } = await instance.get(`/users`);

@@ -1,12 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { ContactProps, UserProps } from "../types/types";
-
-interface ContactContextProps {
-  isModalVisible: boolean;
-  currentContact: UserProps | null;
-  openModal: (contact?: UserProps | null) => void;
-  closeModal: () => void;
-}
+import { ContactContextProps, ContactProps } from "../types/types";
 
 const ModalContext = createContext<ContactContextProps | undefined>(undefined);
 

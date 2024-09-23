@@ -1,5 +1,5 @@
-import React from "react";
 import { ButtonProps } from "../../../types/types";
+import React from "react";
 
 const Button: React.FC<ButtonProps> = ({
   label,
