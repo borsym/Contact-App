@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface UserService {
     List<UserDTO> getAllUsers();
-    UserEntity getUserById(UUID id);
+    UserDTO getUserById(UUID id);
     UserEntity createUser(UserEntity user, MultipartFile file) throws IOException;
     UserEntity updateUser(UUID userId, UserEntity userDetails, MultipartFile file) throws IOException;
     void deleteUser(UUID userId);
