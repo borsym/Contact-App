@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import { ContactProps } from "../types/types";
+import { ContactProps, UserProps } from "../types/types";
 
 interface ContactContextProps {
   isModalVisible: boolean;
-  currentContact: ContactProps | null;
-  openModal: (contact?: ContactProps | null) => void;
+  currentContact: UserProps | null;
+  openModal: (contact?: UserProps | null) => void;
   closeModal: () => void;
 }
 

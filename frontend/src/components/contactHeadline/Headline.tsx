@@ -22,7 +22,6 @@ const Headline: React.FC = () => {
   }
 
   const user = userQuery.data || [];
-  console.log(user);
 
   return (
     <div className="flex justify-between items-center p-4 w-full h-full">
