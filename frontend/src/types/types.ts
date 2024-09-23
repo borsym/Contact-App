@@ -46,7 +46,7 @@ export interface UserProps {
   name: string;
   email: string;
   phoneNumber: string;
-  imageName: string;
+  imageName: string | File;
 }
 
 export interface InputFieldProps {

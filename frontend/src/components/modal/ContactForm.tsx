@@ -2,7 +2,9 @@ import { FieldApi, useForm } from "@tanstack/react-form";
 import { useContacts } from "../../hooks/useContacts";
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
-import { PlusIcon } from "../../assets/icons/Icons";
+import { ChangeIcon, PlusIcon } from "../../assets/icons/Icons";
+import { useState, useEffect } from "react";
+import { UserProps } from "../../types/types";
 import defaultAvatar from "../../assets/images/default.png";
 import Button from "../common/button/Button";
 import CustomInputField from "../common/inputField/InputField";
@@ -56,16 +58,26 @@ const ContactForm = () => {
     },
   });
 
+  const [imagePreview, setImagePreview] = useState<string>(defaultAvatar);
+
+  useEffect(() => {
+    if (isEditMode && currentContact) {
+      setImagePreview((currentContact.imageName as string) || defaultAvatar);
+    } else if (form.state.values.imageName) {
+      const objectUrl = URL.createObjectURL(
+        form.state.values.imageName as unknown as Blob | MediaSource
+      );
+      setImagePreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setImagePreview(defaultAvatar);
+    }
+  }, [isEditMode, currentContact, form.state.values.imageName]);
+
   const handleFieldChange = (fieldName: string, value: string) => {
     const updatedFormData = { ...form.state.values, [fieldName]: value };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedFormData));
   };
-
-  const imagePreview = isEditMode
-    ? currentContact.imageName || defaultAvatar
-    : form.state.values.imageName
-    ? URL.createObjectURL(form.state.values.imageName as unknown as (Blob | MediaSource))
-    : defaultAvatar;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -94,7 +106,13 @@ const ContactForm = () => {
                   <>
                     <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
                       <Button
-                        icon={<PlusIcon />}
+                        icon={
+                          isEditMode && currentContact?.imageName ? (
+                            <ChangeIcon />
+                          ) : (
+                            <PlusIcon />
+                          )
+                        }
                         label={
                           form.state.values.imageName ||
                           (isEditMode && currentContact?.imageName)
@@ -108,9 +126,15 @@ const ContactForm = () => {
                         name={field.name}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         onChange={(e) => {
-                          field.handleChange(
-                            e.target.files ? e.target.files[0] : defaultAvatar
-                          );
+                          const file = e.target.files
+                            ? e.target.files[0]
+                            : defaultAvatar;
+                          field.handleChange(file);
+                          if (file) {
+                            const objectUrl = URL.createObjectURL(file);
+                            setImagePreview(objectUrl);
+                            return () => URL.revokeObjectURL(objectUrl);
+                          }
                         }}
                       />
                     </label>
