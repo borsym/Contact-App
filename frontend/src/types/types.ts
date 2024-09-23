@@ -1,10 +1,12 @@
 export type ButtonVariant = "default" | "secondary" | "special";
-
+export type ButtonTypes = "submit" | "reset" | "button" | undefined;
 export interface ButtonProps {
   label?: string;
-  onClick: () => void;
+  onClick?: (e?: any) => void;
   icon?: React.ReactNode;
   variant?: ButtonVariant;
+  type?: ButtonTypes;
+  disabled?: boolean | undefined;
 }
 
 export interface IconsProps {

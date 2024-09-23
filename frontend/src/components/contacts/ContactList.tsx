@@ -5,6 +5,7 @@ import {
   MuteIcon,
   SettingsIcon,
 } from "../../assets/icons/Icons";
+import { useUsers } from "../../hooks/useUsers";
 import Contact from "./Contact";
 
 const hoverButtons = [
@@ -31,26 +32,7 @@ const menuOptions = [
 ];
 
 const ContactList: React.FC = () => {
-  const contacts = [
-    {
-      id: "1",
-      name: "John Doe",
-      phoneNumber: "+1 234 567 890",
-      imgUrl: "https://picsum.photos/seed/john/200/200",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      phoneNumber: "+1 987 654 321",
-      imgUrl: "https://picsum.photos/seed/jane/200/200",
-    },
-    {
-      id: "3",
-      name: "Bob Johnson",
-      phoneNumber: "+1 555 123 4567",
-      imgUrl: "https://picsum.photos/seed/bob/200/200",
-    },
-  ];
+ const {} = useUsers;
 
   return (
     <div className="space-y-6">
