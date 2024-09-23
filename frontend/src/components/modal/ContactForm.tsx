@@ -1,10 +1,10 @@
-import { FieldApi, useForm } from "@tanstack/react-form";
+import { FieldApi,  useForm } from "@tanstack/react-form";
 import { useContacts } from "../../hooks/useContacts";
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { ChangeIcon, DeleteIcon, PlusIcon } from "../../assets/icons/Icons";
 import { useState, useEffect } from "react";
-import { UserProps } from "../../types/types";
+import { ImageUploadProps, UserProps } from "../../types/types";
 import defaultAvatar from "../../assets/images/default.png";
 import Button from "../common/button/Button";
 import CustomInputField from "../common/inputField/InputField";
@@ -49,7 +49,7 @@ const ContactForm = () => {
         });
       } else {
         await createContactMutation.mutateAsync({
-          userId: "ae0134e6-8d68-4723-8876-55483205411f",
+          userId: "dd3d8e4b-dafd-4b0d-97f9-69d3da1721f3",
           contact: value,
         });
       }
@@ -104,7 +104,10 @@ const ContactForm = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedFormData));
   };
 
-  const handleImageChange = (field: FieldApi<any, any, any, any>, file: File | null) => {
+  const handleImageChange = (
+    field: FieldApi<any, any, any, any>,
+    file: File | null
+  ) => {
     setIsDeleted(false);
 
     if (file) {
@@ -147,51 +150,11 @@ const ContactForm = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <form.Field
-                name="imageName"
-                children={(field) => (
-                  <>
-                    <div className="flex items-center">
-                      <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
-                        <Button
-                          icon={
-                            form.state.values.imageName &&
-                            form.state.values.imageName !== defaultAvatar ? (
-                              <ChangeIcon />
-                            ) : (
-                              <PlusIcon />
-                            )
-                          }
-                          label={
-                            form.state.values.imageName &&
-                            form.state.values.imageName !== defaultAvatar
-                              ? "Change picture"
-                              : "Add picture"
-                          }
-                        />
-                        <input
-                          type="file"
-                          id={field.name}
-                          name={field.name}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          onChange={(e) => {
-                            const file = e.target.files
-                              ? e.target.files[0]
-                              : null;
-                            handleImageChange(field, file);
-                          }}
-                        />
-                      </label>
-                      {imagePreview !== defaultAvatar && (
-                        <Button
-                          icon={<DeleteIcon />}
-                          onClick={() => handleImageDelete(field)}
-                        />
-                      )}
-                    </div>
-                    <FieldInfo field={field} />
-                  </>
-                )}
+              <ImageUploadField
+                form={form}
+                imagePreview={imagePreview}
+                handleImageChange={handleImageChange}
+                handleImageDelete={handleImageDelete}
               />
             </div>
 
@@ -252,3 +215,57 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
+function ImageUploadField({
+  form,
+  imagePreview,
+  handleImageChange,
+  handleImageDelete,
+}: ImageUploadProps) {
+  return (
+    <form.Field
+      name="imageName"
+      children={(field) => (
+        <>
+          <div className="flex items-center">
+            <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
+              <Button
+                icon={
+                  form.state.values.imageName &&
+                  form.state.values.imageName !== defaultAvatar ? (
+                    <ChangeIcon />
+                  ) : (
+                    <PlusIcon />
+                  )
+                }
+                label={
+                  form.state.values.imageName &&
+                  form.state.values.imageName !== defaultAvatar
+                    ? "Change picture"
+                    : "Add picture"
+                }
+              />
+              <input
+                type="file"
+                id={field.name}
+                name={field.name}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                onChange={(e) => {
+                  const file = e.target.files ? e.target.files[0] : null;
+                  handleImageChange(field, file);
+                }}
+              />
+            </label>
+            {imagePreview !== defaultAvatar && (
+              <Button
+                icon={<DeleteIcon />}
+                onClick={() => handleImageDelete(field)}
+              />
+            )}
+          </div>
+          <FieldInfo field={field} />
+        </>
+      )}
+    />
+  );
+}
