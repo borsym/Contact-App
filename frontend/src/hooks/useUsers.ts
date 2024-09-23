@@ -7,9 +7,14 @@ const fetchUsers = async () => {
   return data;
 };
 
+const fetchUserById = async (userId: string) => {
+  const { data } = await axios.get(`${BASE_URL}/users/${userId}`);
+  return data;
+};
+
 const addUser = async (newUser: any) => {
   const formData = new FormData();
-  formData.append("file", newUser.imgUrl);
+  formData.append("file", newUser.imageName);
   formData.append(
     "user",
     new Blob(
@@ -33,7 +38,7 @@ const addUser = async (newUser: any) => {
 
 const updateUser = async (updatedUser: any) => {
   const formData = new FormData();
-  formData.append("file", updatedUser.imgUrl);
+  formData.append("file", updatedUser.imageName);
   formData.append(
     "user",
     JSON.stringify({
@@ -53,10 +58,15 @@ const deleteUser = async (userId: string) => {
   await axios.delete(`${BASE_URL}/users/${userId}`);
 };
 
-export const useUsers = () => {
+export const useUsers = (userId?: string) => {
   const queryClient = useQueryClient();
 
   const usersQuery = useQuery({ queryKey: ["users"], queryFn: fetchUsers });
+  const userQuery = useQuery({
+    queryKey: ["users", userId],
+    queryFn: () => fetchUserById(userId!),
+    enabled: !!userId, // Only fetch if userId is provided
+  });
 
   const addUserMutation = useMutation({
     mutationFn: addUser,
@@ -80,6 +90,7 @@ export const useUsers = () => {
   });
 
   return {
+    userQuery,
     usersQuery,
     addUserMutation,
     updateUserMutation,
