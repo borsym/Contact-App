@@ -32,8 +32,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserEntity getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserDTO getUserById(UUID id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .imageName(user.getImageName() != null ?
+                        s3Service.getPresignedUrl(user.getImageName()) : null).build();
     }
 
     @Override
@@ -47,7 +51,7 @@ public class UserServiceImp implements UserService {
     }
     @Override
     public UserEntity updateUser(UUID userId, UserEntity userDetails, MultipartFile file) throws IOException {
-        UserEntity existingUser = getUserById(userId);
+        UserDTO existingUser = getUserById(userId);
         UserEntity.UserEntityBuilder userBuilder = UserEntity.builder()
                 .id(existingUser.getId())
                 .name(userDetails.getName())
