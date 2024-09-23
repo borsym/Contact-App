@@ -1,4 +1,9 @@
-import { FieldValidators, FormApi, ReactFormApi } from "@tanstack/react-form";
+import {
+  FieldApi,
+  FieldValidators,
+  FormApi,
+  ReactFormApi,
+} from "@tanstack/react-form";
 
 export type ButtonVariant = "primary" | "secondary" | "special";
 export type ButtonTypes = "submit" | "reset" | "button" | undefined;
@@ -47,6 +52,16 @@ export interface UserProps {
   email: string;
   phoneNumber: string;
   imageName: string | File;
+}
+
+export interface ImageUploadProps {
+  form: FormApi<UserProps, undefined> & ReactFormApi<UserProps, undefined>;
+  imagePreview: string;
+  handleImageChange: (
+    field: FieldApi<any, any, any, any>,
+    file: File | null
+  ) => (() => void) | undefined;
+  handleImageDelete: (field: FieldApi<any, any, any, any>) => void;
 }
 
 export interface InputFieldProps {
