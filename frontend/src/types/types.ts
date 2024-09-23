@@ -22,7 +22,7 @@ export interface ContactProps {
   name: string;
   phoneNumber: string;
   email: string;
-  imgUrl: string;
+  imageName: string;
   hoverButtons?: Array<{
     label?: string;
     icon: JSX.Element;
@@ -49,7 +49,7 @@ export interface UserProps {
   name: string;
   email: string;
   phoneNumber: string;
-  imgUrl: File | null;
+  imageName: File | null;
 }
 
 export interface InputFieldProps {
