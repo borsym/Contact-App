@@ -1,9 +1,9 @@
-import Button from "../../components/common/button/Button";
-import React from "react";
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/vitest";
 import { randomText } from "../constants";
+import Button from "../../components/common/button/Button";
+import React from "react";
+import "@testing-library/jest-dom/vitest";
 
 describe("Button Component", () => {
   afterEach(() => cleanup());

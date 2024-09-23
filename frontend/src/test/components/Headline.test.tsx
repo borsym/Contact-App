@@ -1,10 +1,10 @@
-import React from "react";
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/vitest";
 import { useModalContext } from "../../context/ModalContext";
 import { useUsers } from "../../hooks/useUsers";
+import React from "react";
 import Headline from "../../components/contactHeadline/Headline";
+import "@testing-library/jest-dom/vitest";
 
 vi.mock("../../context/ModalContext", () => ({
   useModalContext: vi.fn(() => ({

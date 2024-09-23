@@ -1,5 +1,5 @@
 import { IconsProps } from "../../types/types";
-
+import React from "react";
 const PlusIcon: React.FC<IconsProps> = ({ fill = "white" }) => (
   <svg
     width="14"
@@ -122,5 +122,5 @@ export {
   CallIcon,
   MoreIcon,
   DeleteIcon,
-  ChangeIcon
+  ChangeIcon,
 };

@@ -17,6 +17,13 @@ export interface ButtonProps {
   disabled?: boolean | undefined;
 }
 
+export interface ContactContextProps {
+  isModalVisible: boolean;
+  currentContact: UserProps | null;
+  openModal: (contact?: UserProps | null) => void;
+  closeModal: () => void;
+}
+
 export interface IconsProps {
   fill?: string;
   className?: string;

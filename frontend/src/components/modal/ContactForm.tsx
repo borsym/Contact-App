@@ -1,9 +1,9 @@
-import { FieldApi,  useForm } from "@tanstack/react-form";
+import { FieldApi, useForm } from "@tanstack/react-form";
 import { useContacts } from "../../hooks/useContacts";
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { ChangeIcon, DeleteIcon, PlusIcon } from "../../assets/icons/Icons";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ImageUploadProps, UserProps } from "../../types/types";
 import defaultAvatar from "../../assets/images/default.png";
 import Button from "../common/button/Button";
@@ -228,7 +228,10 @@ function ImageUploadField({
       children={(field) => (
         <>
           <div className="flex items-center">
-            <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
+            <label
+              htmlFor={field.name}
+              className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white"
+            >
               <Button
                 icon={
                   form.state.values.imageName &&
