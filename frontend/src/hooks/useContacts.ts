@@ -46,7 +46,10 @@ const updateContact = async ({
   const formData = new FormData();
   const { imageName, ...contactWithoutImage } = contact;
 
-  const imageToUpload = imageName instanceof File ? imageName : null; // Only upload if the image is a new file
+  const imageToUpload =
+    imageName instanceof File
+      ? imageName
+      : await fetch(defaultAvatar).then((res) => res.blob());
 
   if (imageToUpload) {
     formData.append("file", imageToUpload);

@@ -1,6 +1,6 @@
 import { FieldValidators, FormApi, ReactFormApi } from "@tanstack/react-form";
 
-export type ButtonVariant = "default" | "secondary" | "special";
+export type ButtonVariant = "primary" | "secondary" | "special";
 export type ButtonTypes = "submit" | "reset" | "button" | undefined;
 
 export interface ButtonProps {
