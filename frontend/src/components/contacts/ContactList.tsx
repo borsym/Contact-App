@@ -7,6 +7,7 @@ import {
 } from "../../assets/icons/Icons";
 import { useModalContext } from "../../context/ModalContext";
 import { useContacts } from "../../hooks/useContacts";
+import { UserProps } from "../../types/types";
 import Contact from "./Contact";
 
 const hoverButtons = [
@@ -24,11 +25,11 @@ const ContactList: React.FC = () => {
     await deleteContactMutation.mutateAsync(contactId);
   };
 
-  const handleEdit = (contact: any) => {
+  const handleEdit = (contact: UserProps) => {
     openModal(contact);
   };
 
-  const menuOptions = (contact: any) => [
+  const menuOptions = (contact: UserProps) => [
     {
       label: "Edit",
       action: () => handleEdit(contact),
@@ -41,7 +42,7 @@ const ContactList: React.FC = () => {
     },
     {
       label: "Delete",
-      action: () => handleDelete(contact.id),
+      action: () => handleDelete(contact.id!),
       icon: <DeleteIcon />,
     },
   ];
@@ -54,14 +55,13 @@ const ContactList: React.FC = () => {
     return <div>Error loading contacts</div>;
   }
 
-  const contacts = contactsQuery.data || [];
-
+  const contacts: UserProps[] = contactsQuery.data || [];
   return (
     <div className="space-y-6">
       {contacts.map((contact) => (
         <Contact
           key={contact.id}
-          {...contact}
+          user={contact}
           hoverButtons={hoverButtons}
           menuOptions={menuOptions(contact)}
         />

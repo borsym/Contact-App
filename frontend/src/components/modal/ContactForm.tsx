@@ -1,5 +1,5 @@
 import { FieldApi, useForm } from "@tanstack/react-form";
-import { useContacts } from "../../hooks/useContacts"; // Updated to use useContacts
+import { useContacts } from "../../hooks/useContacts";
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { PlusIcon } from "../../assets/icons/Icons";
@@ -26,8 +26,9 @@ const ContactForm = () => {
   const isEditMode = !!currentContact;
 
   const savedFormData = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const initialFormData = currentContact ||
+  const initialFormData: UserProps = currentContact ||
     JSON.parse(savedFormData) || {
+      id: "",
       name: "",
       email: "",
       phoneNumber: "",
@@ -38,22 +39,6 @@ const ContactForm = () => {
     defaultValues: initialFormData,
     onSubmit: async ({ value }) => {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
-
-      const formData = new FormData();
-      formData.append("file", value.imageName);
-      formData.append(
-        "contact",
-        new Blob(
-          [
-            JSON.stringify({
-              name: value.name,
-              email: value.email,
-              phoneNumber: value.phoneNumber,
-            }),
-          ],
-          { type: "application/json" }
-        )
-      );
 
       if (isEditMode && currentContact) {
         await updateContactMutation.mutateAsync({
@@ -79,7 +64,7 @@ const ContactForm = () => {
   const imagePreview = isEditMode
     ? currentContact.imageName || defaultAvatar
     : form.state.values.imageName
-    ? URL.createObjectURL(form.state.values.imageName)
+    ? URL.createObjectURL(form.state.values.imageName as unknown as (Blob | MediaSource))
     : defaultAvatar;
 
   return (

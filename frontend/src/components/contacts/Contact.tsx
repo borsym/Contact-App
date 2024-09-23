@@ -3,14 +3,9 @@ import { ContactProps } from "../../types/types";
 import { MoreIcon } from "../../assets/icons/Icons";
 import Button from "../common/button/Button";
 import React from "react";
-import { useModalContext } from "../../context/ModalContext";
 
 const Contact: React.FC<ContactProps> = ({
-  id,
-  name,
-  phoneNumber,
-  imageName,
-  email,
+  user,
   hoverButtons = [],
   menuOptions = [],
 }) => {
@@ -32,13 +27,13 @@ const Contact: React.FC<ContactProps> = ({
     >
       <div className="flex items-center space-x-1">
         <img
-          src={imageName}
-          alt={`${name}'s avatar`}
+          src={user.imageName}
+          alt={`${user.name}'s avatar`}
           className="w-10 h-10 rounded-full mr-4 border"
         />
         <div>
-          <h3 className="text-white">{name}</h3>
-          <p className="text-[#FFFFFF8F]"> {phoneNumber}</p>
+          <h3 className="text-white">{user.name}</h3>
+          <p className="text-[#FFFFFF8F]"> {user.phoneNumber}</p>
         </div>
       </div>
 

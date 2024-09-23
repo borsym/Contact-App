@@ -18,11 +18,7 @@ export interface IconsProps {
 }
 
 export interface ContactProps {
-  id: string;
-  name: string;
-  phoneNumber: string;
-  email: string;
-  imageName: string;
+  user: UserProps;
   hoverButtons?: Array<{
     label?: string;
     icon: JSX.Element;
@@ -36,7 +32,7 @@ export interface ContactProps {
 }
 
 export interface GridItemProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export interface ModalProps {
@@ -46,10 +42,11 @@ export interface ModalProps {
 }
 
 export interface UserProps {
+  id: string;
   name: string;
   email: string;
   phoneNumber: string;
-  imageName: File | null;
+  imageName: string;
 }
 
 export interface InputFieldProps {

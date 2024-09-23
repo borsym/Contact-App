@@ -1,53 +1,43 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { BASE_URL, instance } from "../utilts";
+import { UserProps } from "../types/types";
 import axios from "axios";
-import { BASE_URL } from "../utilts";
 
 const fetchUsers = async () => {
-  const { data } = await axios.get(`${BASE_URL}/users`);
+  const { data } = await instance.get(`/users`);
   return data;
 };
 
 const fetchUserById = async (userId: string) => {
-  const { data } = await axios.get(`${BASE_URL}/users/${userId}`);
+  const { data } = await instance.get(`/users/${userId}`);
   return data;
 };
 
-const addUser = async (newUser: any) => {
+const addUser = async (newUser: UserProps) => {
   const formData = new FormData();
-  formData.append("file", newUser.imageName);
+  const { imageName, ...usertWithoutImage } = newUser;
+  formData.append("file", imageName!);
   formData.append(
     "user",
-    new Blob(
-      [
-        JSON.stringify({
-          name: newUser.name,
-          email: newUser.email,
-          phoneNumber: newUser.phoneNumber,
-        }),
-      ],
-      { type: "application/json" }
-    )
+    new Blob([JSON.stringify(usertWithoutImage)], { type: "application/json" })
   );
 
-  await axios.post(`${BASE_URL}/users`, formData, {
+  await instance.post(`/users`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 };
 
-const updateUser = async (updatedUser: any) => {
+const updateUser = async (updatedUser: UserProps) => {
   const formData = new FormData();
-  formData.append("file", updatedUser.imageName);
+  const { imageName, ...usertWithoutImage } = updatedUser;
+  formData.append("file", imageName!);
   formData.append(
     "user",
-    JSON.stringify({
-      name: updatedUser.name,
-      email: updatedUser.email,
-      phoneNumber: updatedUser.phoneNumber,
-    })
+    new Blob([JSON.stringify(usertWithoutImage)], { type: "application/json" })
   );
-  await axios.put(`${BASE_URL}/users/${updatedUser.id}`, formData, {
+  await instance.put(`}/users/${updatedUser.id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -55,7 +45,7 @@ const updateUser = async (updatedUser: any) => {
 };
 
 const deleteUser = async (userId: string) => {
-  await axios.delete(`${BASE_URL}/users/${userId}`);
+  await instance.delete(`/users/${userId}`);
 };
 
 export const useUsers = (userId?: string) => {
@@ -65,7 +55,7 @@ export const useUsers = (userId?: string) => {
   const userQuery = useQuery({
     queryKey: ["users", userId],
     queryFn: () => fetchUserById(userId!),
-    enabled: !!userId, // Only fetch if userId is provided
+    enabled: !!userId,
   });
 
   const addUserMutation = useMutation({
