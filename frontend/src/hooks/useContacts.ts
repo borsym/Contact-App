@@ -1,12 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { instance } from "../utilts";
 import { UserProps } from "../types/types";
-
+import defaultAvatar from "../assets/images/default.png";
 const fetchContactsByUserId = async (userId: string) => {
   const { data } = await instance.get(`/contacts/users/${userId}`);
   return data;
 };
-
 const createContact = async ({
   userId,
   contact,
@@ -16,7 +15,13 @@ const createContact = async ({
 }) => {
   const formData = new FormData();
   const { imageName, ...contactWithoutImage } = contact;
-  formData.append("file", imageName!);
+
+  const imageToUpload =
+    imageName instanceof File
+      ? imageName
+      : await fetch(defaultAvatar).then((res) => res.blob());
+
+  formData.append("file", imageToUpload);
   formData.append(
     "contact",
     new Blob([JSON.stringify(contactWithoutImage)], {
@@ -40,7 +45,13 @@ const updateContact = async ({
 }) => {
   const formData = new FormData();
   const { imageName, ...contactWithoutImage } = contact;
-  formData.append("file", imageName!);
+
+  const imageToUpload = imageName instanceof File ? imageName : null; // Only upload if the image is a new file
+
+  if (imageToUpload) {
+    formData.append("file", imageToUpload);
+  }
+
   formData.append(
     "contact",
     new Blob([JSON.stringify(contactWithoutImage)], {
@@ -54,7 +65,6 @@ const updateContact = async ({
     },
   });
 };
-
 const deleteContact = async (contactId: string) => {
   await instance.delete(`/contacts/${contactId}`);
 };
