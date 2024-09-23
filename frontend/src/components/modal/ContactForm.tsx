@@ -2,7 +2,7 @@ import { FieldApi, useForm } from "@tanstack/react-form";
 import { useContacts } from "../../hooks/useContacts";
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
-import { ChangeIcon, PlusIcon } from "../../assets/icons/Icons";
+import { ChangeIcon, DeleteIcon, PlusIcon } from "../../assets/icons/Icons";
 import { useState, useEffect } from "react";
 import { UserProps } from "../../types/types";
 import defaultAvatar from "../../assets/images/default.png";
@@ -49,7 +49,7 @@ const ContactForm = () => {
         });
       } else {
         await createContactMutation.mutateAsync({
-          userId: "96deb1b9-d39a-4958-95d3-51f6843fab54",
+          userId: "ae0134e6-8d68-4723-8876-55483205411f",
           contact: value,
         });
       }
@@ -59,24 +59,71 @@ const ContactForm = () => {
   });
 
   const [imagePreview, setImagePreview] = useState<string>(defaultAvatar);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isImgChanged, setIsImgChanged] = useState(false);
 
   useEffect(() => {
-    if (isEditMode && currentContact) {
-      setImagePreview((currentContact.imageName as string) || defaultAvatar);
-    } else if (form.state.values.imageName) {
-      const objectUrl = URL.createObjectURL(
-        form.state.values.imageName as unknown as Blob | MediaSource
-      );
-      setImagePreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
-    } else {
-      setImagePreview(defaultAvatar);
-    }
-  }, [isEditMode, currentContact, form.state.values.imageName]);
+    const updateImagePreview = () => {
+      if (isDeleted) {
+        setImagePreview(defaultAvatar);
+      } else if (isEditMode && currentContact && !isImgChanged) {
+        setImagePreview(currentContact.imageName || defaultAvatar);
+      } else if (
+        form.state.values.imageName &&
+        form.state.values.imageName !== defaultAvatar
+      ) {
+        const objectUrl =
+          typeof form.state.values.imageName === "string"
+            ? form.state.values.imageName
+            : URL.createObjectURL(
+                form.state.values.imageName as Blob | MediaSource
+              );
+
+        setImagePreview(objectUrl);
+        return () => {
+          if (typeof objectUrl !== "string") {
+            URL.revokeObjectURL(objectUrl);
+          }
+        };
+      } else {
+        setImagePreview(defaultAvatar);
+      }
+    };
+
+    updateImagePreview();
+  }, [
+    isEditMode,
+    currentContact,
+    form.state.values.imageName,
+    isDeleted,
+    isImgChanged,
+  ]);
 
   const handleFieldChange = (fieldName: string, value: string) => {
     const updatedFormData = { ...form.state.values, [fieldName]: value };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedFormData));
+  };
+
+  const handleImageChange = (field: FieldApi<any, any, any, any>, file: File | null) => {
+    setIsDeleted(false);
+
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setIsImgChanged(true);
+      field.handleChange(file);
+      setImagePreview(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setImagePreview(defaultAvatar);
+    }
+  };
+
+  const handleImageDelete = (field: FieldApi<any, any, any, any>) => {
+    setIsDeleted(true);
+    setIsImgChanged(false);
+    field.handleChange(defaultAvatar);
+    setImagePreview(defaultAvatar);
   };
 
   return (
@@ -104,40 +151,44 @@ const ContactForm = () => {
                 name="imageName"
                 children={(field) => (
                   <>
-                    <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
-                      <Button
-                        icon={
-                          isEditMode && currentContact?.imageName ? (
-                            <ChangeIcon />
-                          ) : (
-                            <PlusIcon />
-                          )
-                        }
-                        label={
-                          form.state.values.imageName ||
-                          (isEditMode && currentContact?.imageName)
-                            ? "Change picture"
-                            : "Add picture"
-                        }
-                      />
-                      <input
-                        type="file"
-                        id={field.name}
-                        name={field.name}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={(e) => {
-                          const file = e.target.files
-                            ? e.target.files[0]
-                            : defaultAvatar;
-                          field.handleChange(file);
-                          if (file) {
-                            const objectUrl = URL.createObjectURL(file);
-                            setImagePreview(objectUrl);
-                            return () => URL.revokeObjectURL(objectUrl);
+                    <div className="flex items-center">
+                      <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
+                        <Button
+                          icon={
+                            form.state.values.imageName &&
+                            form.state.values.imageName !== defaultAvatar ? (
+                              <ChangeIcon />
+                            ) : (
+                              <PlusIcon />
+                            )
                           }
-                        }}
-                      />
-                    </label>
+                          label={
+                            form.state.values.imageName &&
+                            form.state.values.imageName !== defaultAvatar
+                              ? "Change picture"
+                              : "Add picture"
+                          }
+                        />
+                        <input
+                          type="file"
+                          id={field.name}
+                          name={field.name}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          onChange={(e) => {
+                            const file = e.target.files
+                              ? e.target.files[0]
+                              : null;
+                            handleImageChange(field, file);
+                          }}
+                        />
+                      </label>
+                      {imagePreview !== defaultAvatar && (
+                        <Button
+                          icon={<DeleteIcon />}
+                          onClick={() => handleImageDelete(field)}
+                        />
+                      )}
+                    </div>
                     <FieldInfo field={field} />
                   </>
                 )}
