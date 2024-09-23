@@ -51,7 +51,6 @@ const ContactList: React.FC = () => {
       imgUrl: "https://picsum.photos/seed/bob/200/200",
     },
   ];
-
   return (
     <div className="space-y-6">
       {contacts.map((contact) => (

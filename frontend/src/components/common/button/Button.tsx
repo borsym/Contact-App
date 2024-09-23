@@ -1,11 +1,13 @@
 import React from "react";
-import { ButtonProps } from "../../types/types";
+import { ButtonProps } from "../../../types/types";
 
 const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
   icon,
   variant = "default",
+  type,
+  disabled,
 }) => {
   const buttonStyle =
     variant === "default"
@@ -18,6 +20,8 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       className={`flex items-center px-4 py-2 rounded-lg text-white focus:outline-none transition-all ${buttonStyle}`}
+      type={type}
+      disabled={disabled}
     >
       {icon && <span className="mr-2">{icon}</span>}
       {label}

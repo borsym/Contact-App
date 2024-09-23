@@ -1,7 +1,16 @@
 import { PlusIcon, SettingsIcon } from "../../assets/icons/Icons";
-import Button from "../button/Button";
+import { useModalContext } from "../../context/ModalContext";
+import Button from "../common/button/Button";
+import ContactForm from "../modal/ContactForm";
+import Modal from "../modal/Modal";
 
 const Headline: React.FC = () => {
+  const { openModal, closeModal } = useModalContext();
+
+  const handleAddContact = () => {
+    openModal(null); // Open the modal without a contact (for adding)
+  };
+
   return (
     <div className="flex justify-between items-center p-4 w-full h-full">
       <div className="text-3xl text-white">Contacts</div>
@@ -22,11 +31,14 @@ const Headline: React.FC = () => {
         <div>
           <Button
             label="Add new"
-            onClick={() => {}}
+            onClick={handleAddContact}
             icon={<PlusIcon />}
             variant="special"
           />
         </div>
+        <Modal onClose={closeModal} title="Add New Contact">
+          <ContactForm />
+        </Modal>
       </div>
     </div>
   );
