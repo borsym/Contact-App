@@ -1,4 +1,5 @@
 import { FieldApi } from "@tanstack/react-form";
+import { InputFieldProps } from "../../../types/types";
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -12,18 +13,18 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
     </>
   );
 }
-const InputField = (
-  form: any,
-  handleFieldChange: (fieldName: string, value: string) => void,
-  label: string,
-  placeholder: string,
-  name: string,
-  type: string = "text",
-  validators: any = {},
-  inputClassName: string = "w-[316px] h-10 px-3 py-2 text-white bg-[#1E1E1E] border border-[#282828] rounded-lg focus:border-[#414141] active:bg-[#282828] active:border-[#414141] hover:border-[#373737]",
-  labelClassName: string = "text-[#FFFFFF8F]",
-  containerClassName: string = "flex flex-col"
-) => {
+const CustomInputField: React.FC<InputFieldProps> = ({
+  form,
+  handleFieldChange,
+  label,
+  placeholder,
+  name,
+  type = "text",
+  validators = {},
+  inputClassName = "w-[316px] h-10 px-3 py-2 text-white bg-[#1E1E1E] border border-[#282828] rounded-lg focus:border-[#414141] active:bg-[#282828] active:border-[#414141] hover:border-[#373737]",
+  labelClassName = "text-[#FFFFFF8F]",
+  containerClassName = "flex flex-col",
+}) => {
   return (
     <div className={containerClassName}>
       <form.Field
@@ -53,4 +54,4 @@ const InputField = (
   );
 };
 
-export default InputField;
+export default CustomInputField;

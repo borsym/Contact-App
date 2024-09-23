@@ -4,8 +4,8 @@ import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { PlusIcon } from "../../assets/icons/Icons";
 import defaultAvatar from "../../assets/images/default.png";
-import InputField from "../common/inputField/InputField";
 import Button from "../common/button/Button";
+import CustomInputField from "../common/inputField/InputField";
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -133,37 +133,38 @@ const ContactForm = () => {
               />
             </div>
 
-            {InputField(
-              form,
-              handleFieldChange,
-              "Name",
-              "Name",
-              "name",
-              "text",
-              {
+            <CustomInputField
+              form={form}
+              handleFieldChange={handleFieldChange}
+              label="Name"
+              placeholder="Name"
+              name="name"
+              type="text"
+              validators={{
                 onChange: ({ value }) =>
                   !value
                     ? "A name is required"
                     : value.length < 3
                     ? "Name must be at least 3 characters"
                     : undefined,
-              }
-            )}
-            {InputField(
-              form,
-              handleFieldChange,
-              "Phone Number",
-              "Phone number",
-              "phoneNumber"
-            )}
-            {InputField(
-              form,
-              handleFieldChange,
-              "Email",
-              "email",
-              "email",
-              "email"
-            )}
+              }}
+            />
+            <CustomInputField
+              form={form}
+              handleFieldChange={handleFieldChange}
+              label="Phone Number"
+              placeholder="Phone number"
+              name="phoneNumber"
+              type="tel"
+            />
+            <CustomInputField
+              form={form}
+              handleFieldChange={handleFieldChange}
+              label="Email"
+              placeholder="email"
+              name="email"
+              type="email"
+            />
           </div>
           <div className="min-w-[364px] flex justify-end items-center pt-6 pr-6 gap-2">
             <Button
