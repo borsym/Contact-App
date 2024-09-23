@@ -1,5 +1,5 @@
 import { FieldApi, useForm } from "@tanstack/react-form";
-import { useUsers } from "../../hooks/useUsers";
+import { useContacts } from "../../hooks/useContacts"; // Updated to use useContacts
 import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { PlusIcon } from "../../assets/icons/Icons";
@@ -21,7 +21,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 const ContactForm = () => {
-  const { addUserMutation, updateUserMutation } = useUsers();
+  const { createContactMutation, updateContactMutation } = useContacts();
   const { currentContact, closeModal } = useModalContext();
   const isEditMode = !!currentContact;
 
@@ -31,7 +31,7 @@ const ContactForm = () => {
       name: "",
       email: "",
       phoneNumber: "",
-      imgUrl: null,
+      imageName: null,
     };
 
   const form = useForm({
@@ -40,9 +40,9 @@ const ContactForm = () => {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
 
       const formData = new FormData();
-      formData.append("file", value.imgUrl);
+      formData.append("file", value.imageName);
       formData.append(
-        "user",
+        "contact",
         new Blob(
           [
             JSON.stringify({
@@ -56,12 +56,15 @@ const ContactForm = () => {
       );
 
       if (isEditMode && currentContact) {
-        await updateUserMutation.mutateAsync({
-          ...value,
-          id: currentContact.id,
+        await updateContactMutation.mutateAsync({
+          contactId: currentContact.id,
+          contact: value,
         });
       } else {
-        await addUserMutation.mutateAsync(value);
+        await createContactMutation.mutateAsync({
+          userId: "96deb1b9-d39a-4958-95d3-51f6843fab54",
+          contact: value,
+        });
       }
 
       closeModal();
@@ -74,9 +77,9 @@ const ContactForm = () => {
   };
 
   const imagePreview = isEditMode
-    ? currentContact.imgUrl || defaultAvatar
-    : form.state.values.imgUrl
-    ? URL.createObjectURL(form.state.values.imgUrl)
+    ? currentContact.imageName || defaultAvatar
+    : form.state.values.imageName
+    ? URL.createObjectURL(form.state.values.imageName)
     : defaultAvatar;
 
   return (
@@ -101,16 +104,15 @@ const ContactForm = () => {
                 />
               </div>
               <form.Field
-                name="imgUrl"
+                name="imageName"
                 children={(field) => (
                   <>
                     <label className="relative cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white">
                       <Button
                         icon={<PlusIcon />}
-                        onClick={() => {}}
                         label={
-                          form.state.values.imgUrl ||
-                          (isEditMode && currentContact?.imgUrl)
+                          form.state.values.imageName ||
+                          (isEditMode && currentContact?.imageName)
                             ? "Change picture"
                             : "Add picture"
                         }
@@ -122,7 +124,7 @@ const ContactForm = () => {
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         onChange={(e) => {
                           field.handleChange(
-                            e.target.files ? e.target.files[0] : null
+                            e.target.files ? e.target.files[0] : defaultAvatar
                           );
                         }}
                       />

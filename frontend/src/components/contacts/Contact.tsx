@@ -9,22 +9,16 @@ const Contact: React.FC<ContactProps> = ({
   id,
   name,
   phoneNumber,
-  imgUrl,
+  imageName,
   email,
   hoverButtons = [],
   menuOptions = [],
 }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const { openModal } = useModalContext();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
-  };
-
-  const handleEdit = () => {
-    openModal({ id, name, phoneNumber, imgUrl, email });
-    setIsDropdownOpen(false);
   };
 
   return (
@@ -38,7 +32,7 @@ const Contact: React.FC<ContactProps> = ({
     >
       <div className="flex items-center space-x-1">
         <img
-          src={imgUrl}
+          src={imageName}
           alt={`${name}'s avatar`}
           className="w-10 h-10 rounded-full mr-4 border"
         />
@@ -70,9 +64,7 @@ const Contact: React.FC<ContactProps> = ({
                   {menuOptions.map((option, index) => (
                     <li
                       key={index}
-                      onClick={
-                        option.label === "Edit" ? handleEdit : option.action
-                      }
+                      onClick={option.action}
                       className="px-4 py-2 hover:bg-[#282828] cursor-pointer flex items-center"
                     >
                       {option.icon}

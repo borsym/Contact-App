@@ -1,5 +1,6 @@
 import { PlusIcon, SettingsIcon } from "../../assets/icons/Icons";
 import { useModalContext } from "../../context/ModalContext";
+import { useUsers } from "../../hooks/useUsers";
 import Button from "../common/button/Button";
 import ContactForm from "../modal/ContactForm";
 import Modal from "../modal/Modal";
@@ -8,21 +9,33 @@ const Headline: React.FC = () => {
   const { openModal, closeModal } = useModalContext();
 
   const handleAddContact = () => {
-    openModal(null); // Open the modal without a contact (for adding)
+    openModal(null);
   };
+  const { userQuery } = useUsers("96deb1b9-d39a-4958-95d3-51f6843fab54");
+
+  if (userQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (userQuery.isError) {
+    return <div>Error loading user</div>;
+  }
+
+  const user = userQuery.data || [];
+  console.log(user);
 
   return (
     <div className="flex justify-between items-center p-4 w-full h-full">
       <div className="text-3xl text-white">Contacts</div>
 
       <div className="flex items-center space-x-4">
-        <button className="">
+        <button>
           <SettingsIcon />
         </button>
 
         <div className="w-8 h-8 rounded-full overflow-hidden">
           <img
-            src="https://picsum.photos/seed/picsum/200/300"
+            src={user.imageName}
             alt="Avatar"
             className="w-full h-full object-cover"
           />

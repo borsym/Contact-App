@@ -5,6 +5,8 @@ import {
   MuteIcon,
   SettingsIcon,
 } from "../../assets/icons/Icons";
+import { useModalContext } from "../../context/ModalContext";
+import { useContacts } from "../../hooks/useContacts";
 import Contact from "./Contact";
 
 const hoverButtons = [
@@ -12,45 +14,48 @@ const hoverButtons = [
   { icon: <CallIcon />, action: () => console.log("Call") },
 ];
 
-const menuOptions = [
-  {
-    label: "Edit",
-    action: () => console.log("Edit"),
-    icon: <SettingsIcon />,
-  },
-  {
-    label: "Favourite",
-    action: () => console.log("Favourite"),
-    icon: <FavouriteIcon />,
-  },
-  {
-    label: "Delete",
-    action: () => console.log("Delete"),
-    icon: <DeleteIcon />,
-  },
-];
-
 const ContactList: React.FC = () => {
-  const contacts = [
+  const { contactsQuery, deleteContactMutation } = useContacts(
+    "96deb1b9-d39a-4958-95d3-51f6843fab54"
+  );
+  const { openModal } = useModalContext();
+
+  const handleDelete = async (contactId: string) => {
+    await deleteContactMutation.mutateAsync(contactId);
+  };
+
+  const handleEdit = (contact: any) => {
+    openModal(contact);
+  };
+
+  const menuOptions = (contact: any) => [
     {
-      id: "1",
-      name: "John Doe",
-      phoneNumber: "+1 234 567 890",
-      imgUrl: "https://picsum.photos/seed/john/200/200",
+      label: "Edit",
+      action: () => handleEdit(contact),
+      icon: <SettingsIcon />,
     },
     {
-      id: "2",
-      name: "Jane Smith",
-      phoneNumber: "+1 987 654 321",
-      imgUrl: "https://picsum.photos/seed/jane/200/200",
+      label: "Favourite",
+      action: () => console.log("Favourite"),
+      icon: <FavouriteIcon />,
     },
     {
-      id: "3",
-      name: "Bob Johnson",
-      phoneNumber: "+1 555 123 4567",
-      imgUrl: "https://picsum.photos/seed/bob/200/200",
+      label: "Delete",
+      action: () => handleDelete(contact.id),
+      icon: <DeleteIcon />,
     },
   ];
+
+  if (contactsQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (contactsQuery.isError) {
+    return <div>Error loading contacts</div>;
+  }
+
+  const contacts = contactsQuery.data || [];
+
   return (
     <div className="space-y-6">
       {contacts.map((contact) => (
@@ -58,7 +63,7 @@ const ContactList: React.FC = () => {
           key={contact.id}
           {...contact}
           hoverButtons={hoverButtons}
-          menuOptions={menuOptions}
+          menuOptions={menuOptions(contact)}
         />
       ))}
     </div>
