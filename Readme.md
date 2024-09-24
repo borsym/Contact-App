@@ -36,3 +36,11 @@ chmod +x add_user.sh
 5. Open your browser and navigate to `http://localhost:5173` to access the contact list application.
 
 6. Don't forget to refresh the page
+
+
+TODO
+- refactor contactform
+- app.js useffect -> hook
+- remove entity controler-> DTO
+- move the url backend to static
+
