@@ -25,7 +25,7 @@ public class UserServiceImp implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         List<UserEntity> users = userRepository.findAll();
-        return users.stream().map(user -> UserDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
+        return (List<UserDTO>) users.stream().map(user -> UserDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .imageName(user.getImageName() != null ?
                         s3Service.getPresignedUrl(user.getImageName()) : null).build()).toList();
