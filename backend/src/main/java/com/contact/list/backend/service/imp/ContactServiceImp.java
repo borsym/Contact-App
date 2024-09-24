@@ -67,8 +67,8 @@ public class ContactServiceImp implements ContactService {
     public ContactEntity updateContact(UUID contactId, ContactEntity contactDetails, MultipartFile file) throws IOException {
         ContactEntity existingContact = getContactById(contactId);
 
-        if (!existingContact.getEmail().equals(contactDetails.getEmail()) || 
-            !existingContact.getPhoneNumber().equals(contactDetails.getPhoneNumber())) {
+        if (!existingContact.getEmail().equals(contactDetails.getEmail()) ||
+                !existingContact.getPhoneNumber().equals(contactDetails.getPhoneNumber())) {
             if (contactRepository.existsByEmailOrPhoneNumber(contactDetails.getEmail(), contactDetails.getPhoneNumber())) {
                 throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
             }
@@ -96,7 +96,8 @@ public class ContactServiceImp implements ContactService {
 
     @Override
     public void deleteContact(UUID contactId) {
-        ContactEntity contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));;
+        ContactEntity contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));
+        ;
 
         if (contact.getImageName() != null) {
             s3Service.deleteFile(contact.getImageName());
