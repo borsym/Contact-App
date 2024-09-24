@@ -43,7 +43,7 @@ public class ContactServiceImp implements ContactService {
     @Override
     public List<ContactDTO> getContactsByUserId(UUID userId) {
         List<ContactEntity> contacts = contactRepository.findByUserId(userId);
-        return contacts.stream().map(user -> ContactDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
+        return (List<ContactDTO>) contacts.stream().map(user -> ContactDTO.builder().id(user.getId()).name(user.getName()).email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .imageName(user.getImageName() != null ?
                         s3Service.getPresignedUrl(user.getImageName()) : null).build()).toList();
