@@ -37,18 +37,17 @@ function App() {
       <div>
         <div className="grid grid-cols-[20%_60%_20%] grid-rows-[10vh_10vh_80vh] min-h-full bg-black">
           <GridItem></GridItem>
+          <GridItem>Contacts</GridItem>
           <GridItem></GridItem>
-          <GridItem></GridItem>
-          <GridItem className="flex justify-end items-center">
+          <div className="border border-[#2D2D2D] p-4 flex justify-end items-center">
             <BackArrowIcon />
-          </GridItem>
+          </div>
           <div className="border border-[#2D2D2D]">
             <Headline userId={userId} />
           </div>
-          <GridItem className="flex justify-start items-center">
+          <div className="border border-[#2D2D2D] p-4 flex justify-start items-center">
             <LightModeIcon />
-          </GridItem>
-
+          </div>
           <GridItem></GridItem>
           <div className="border border-[#2D2D2D] p-4">
             <ContactList userId={userId} />

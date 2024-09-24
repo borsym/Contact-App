@@ -86,6 +86,12 @@ export const useContacts = (contactId?: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
     },
+    onError: (error: any) => {
+      if (error.response && error.response.status === 409) {
+        throw new Error("Email or phone number already exists");
+      }
+      throw error;
+    },
   });
 
   const updateContactMutation = useMutation({

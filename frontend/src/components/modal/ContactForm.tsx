@@ -42,19 +42,22 @@ const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
     onSubmit: async ({ value }) => {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
 
-      if (isEditMode && currentContact) {
-        await updateContactMutation.mutateAsync({
-          contactId: currentContact.id,
-          contact: value,
-        });
-      } else {
-        await createContactMutation.mutateAsync({
-          userId: userId,
-          contact: value,
-        });
+      try {
+        if (isEditMode && currentContact) {
+          await updateContactMutation.mutateAsync({
+            contactId: currentContact.id,
+            contact: value,
+          });
+        } else {
+          await createContactMutation.mutateAsync({
+            userId: userId,
+            contact: value,
+          });
+        }
+        closeModal();
+      } catch (error: any) {
+        alert(error.message);
       }
-
-      closeModal();
     },
   });
 
@@ -161,12 +164,13 @@ const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
             <CustomInputField
               form={form}
               handleFieldChange={handleFieldChange}
+              placeholder="Jamie Wright"
               label="Name"
-              placeholder="Name"
               name="name"
               type="text"
               validators={{
-                onChange: ({ value }) =>
+                onChangeAsyncDebounceMs: 500,
+                onChangeAsync: ({ value }) =>
                   !value
                     ? "A name is required"
                     : value.length < 3
@@ -177,18 +181,36 @@ const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
             <CustomInputField
               form={form}
               handleFieldChange={handleFieldChange}
-              label="Phone Number"
-              placeholder="Phone number"
+              placeholder="+01 234 5678"
+              label="Phone number"
               name="phoneNumber"
               type="tel"
+              validators={{
+                onChangeAsyncDebounceMs: 500,
+                onChangeAsync: ({ value }) =>
+                  !value
+                    ? "A phone number is required"
+                    : !/^\+?\d{10,20}$/.test(value)
+                    ? "Invalid phone number"
+                    : undefined,
+              }}
             />
             <CustomInputField
               form={form}
               handleFieldChange={handleFieldChange}
-              label="Email"
-              placeholder="email"
+              label="Email address"
+              placeholder="jamie.wright@mail.com"
               name="email"
               type="email"
+              validators={{
+                onChangeAsyncDebounceMs: 500,
+                onChangeAsync: ({ value }) =>
+                  !value
+                    ? "An email is required"
+                    : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+                    ? "Invalid email address"
+                    : undefined,
+              }}
             />
           </div>
           <div className="min-w-[364px] flex justify-end items-center pt-6 pr-6 gap-2">
