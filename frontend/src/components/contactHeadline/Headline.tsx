@@ -1,18 +1,19 @@
 import { PlusIcon, SettingsIcon } from "../../assets/icons/Icons";
 import { useModalContext } from "../../context/ModalContext";
 import { useUsers } from "../../hooks/useUsers";
+import { MockIdProps } from "../../types/types";
 import React from "react";
 import Button from "../common/button/Button";
 import ContactForm from "../modal/ContactForm";
 import Modal from "../modal/Modal";
 
-const Headline: React.FC = () => {
+const Headline: React.FC<MockIdProps> = ({ userId }) => {
   const { openModal, closeModal } = useModalContext();
 
   const handleAddContact = () => {
     openModal(null);
   };
-  const { userQuery } = useUsers("dd3d8e4b-dafd-4b0d-97f9-69d3da1721f3");
+  const { userQuery } = useUsers(userId);
 
   if (userQuery.isLoading) {
     return <div>Loading...</div>;
@@ -50,7 +51,7 @@ const Headline: React.FC = () => {
           />
         </div>
         <Modal onClose={closeModal} title="Add New Contact">
-          <ContactForm />
+          <ContactForm userId={userId} />
         </Modal>
       </div>
     </div>

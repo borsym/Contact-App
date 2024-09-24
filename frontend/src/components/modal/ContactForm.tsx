@@ -4,7 +4,7 @@ import { useModalContext } from "../../context/ModalContext";
 import { LOCAL_STORAGE_KEY } from "../../utilts";
 import { ChangeIcon, DeleteIcon, PlusIcon } from "../../assets/icons/Icons";
 import React, { useState, useEffect } from "react";
-import { ImageUploadProps, UserProps } from "../../types/types";
+import { ImageUploadProps, MockIdProps, UserProps } from "../../types/types";
 import defaultAvatar from "../../assets/images/default.png";
 import Button from "../common/button/Button";
 import CustomInputField from "../common/inputField/InputField";
@@ -22,7 +22,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   );
 }
 
-const ContactForm = () => {
+const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
   const { createContactMutation, updateContactMutation } = useContacts();
   const { currentContact, closeModal } = useModalContext();
   const isEditMode = !!currentContact;
@@ -49,7 +49,7 @@ const ContactForm = () => {
         });
       } else {
         await createContactMutation.mutateAsync({
-          userId: "dd3d8e4b-dafd-4b0d-97f9-69d3da1721f3",
+          userId: userId,
           contact: value,
         });
       }
