@@ -1,3 +1,4 @@
+import { BackArrowIcon, LightModeIcon } from "./assets/icons/Icons";
 import Headline from "./components/contactHeadline/Headline";
 import ContactList from "./components/contacts/ContactList";
 import GridItem from "./components/gridItem/GridItem";
@@ -11,12 +12,15 @@ function App() {
           <GridItem></GridItem>
           <GridItem></GridItem>
           <GridItem></GridItem>
-
-          <GridItem></GridItem>
+          <GridItem className="flex justify-end items-center">
+            <BackArrowIcon />
+          </GridItem>
           <div className="border border-[#2D2D2D]">
             <Headline />
           </div>
-          <GridItem></GridItem>
+          <GridItem className="flex justify-start items-center">
+            <LightModeIcon />
+          </GridItem>
 
           <GridItem></GridItem>
           <div className="border border-[#2D2D2D] p-4">
