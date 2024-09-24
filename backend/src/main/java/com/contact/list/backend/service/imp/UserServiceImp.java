@@ -61,10 +61,15 @@ public class UserServiceImp implements UserService {
         UserEntity existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
 
-        if (!existingUser.getEmail().equals(userDetails.getEmail()) ||
-                !existingUser.getPhoneNumber().equals(userDetails.getPhoneNumber())) {
-            if (userRepository.existsByEmailOrPhoneNumberAndIdNot(userDetails.getEmail(), userDetails.getPhoneNumber(), userId)) {
-                throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
+        if (!existingUser.getEmail().equals(userDetails.getEmail())) {
+            if (userRepository.existsByEmailAndIdNot(userDetails.getEmail(), userId)) {
+                throw new CustomException("Email already exists for another user", HttpStatus.CONFLICT);
+            }
+        }
+
+        if (!existingUser.getPhoneNumber().equals(userDetails.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumberAndIdNot(userDetails.getPhoneNumber(), userId)) {
+                throw new CustomException("Phone number already exists for another user", HttpStatus.CONFLICT);
             }
         }
 
@@ -82,7 +87,6 @@ public class UserServiceImp implements UserService {
             String imageUrl = s3Service.uploadFile(file);
             userBuilder.imageName(imageUrl);
         }
-
         UserEntity updatedUser = userBuilder.build();
         return userRepository.save(updatedUser);
     }
