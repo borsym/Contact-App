@@ -27,7 +27,9 @@ const Headline: React.FC<MockIdProps> = ({ userId }) => {
 
   return (
     <div className="flex justify-between items-center p-4 w-full h-full">
-      <h1 className="font-glysa text-white font-medium">Contacts</h1>
+      <h1 className="font-glysa text-white font-medium hidden sm:block">
+        Contacts
+      </h1>
 
       <div className="flex items-center space-x-4">
         <button>
