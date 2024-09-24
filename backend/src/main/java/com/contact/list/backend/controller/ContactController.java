@@ -35,7 +35,10 @@ public class ContactController {
     }
 
     @PutMapping(value = "/{contactId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ContactEntity> updateContact(@PathVariable UUID contactId, @RequestPart("file") MultipartFile file, @Valid @RequestPart("contact") ContactEntity contact) throws IOException {
+    public ResponseEntity<ContactEntity> updateContact(
+            @PathVariable UUID contactId,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @Valid @RequestPart("contact") ContactEntity contact) throws IOException {
         ContactEntity updatedContact = contactService.updateContact(contactId, contact, file);
         return ResponseEntity.ok(updatedContact);
     }

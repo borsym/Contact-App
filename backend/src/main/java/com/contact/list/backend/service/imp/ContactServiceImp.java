@@ -65,12 +65,18 @@ public class ContactServiceImp implements ContactService {
 
     @Override
     public ContactEntity updateContact(UUID contactId, ContactEntity contactDetails, MultipartFile file) throws IOException {
-        ContactEntity existingContact = getContactById(contactId);
+        ContactEntity existingContact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new RuntimeException("Contact not found"));
 
-        if (!existingContact.getEmail().equals(contactDetails.getEmail()) ||
-                !existingContact.getPhoneNumber().equals(contactDetails.getPhoneNumber())) {
-            if (contactRepository.existsByEmailOrPhoneNumber(contactDetails.getEmail(), contactDetails.getPhoneNumber())) {
-                throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
+        if (!existingContact.getEmail().equals(contactDetails.getEmail())) {
+            if (contactRepository.existsByEmailAndIdNot(contactDetails.getEmail(), contactId)) {
+                throw new CustomException("Email already exists for another contact", HttpStatus.CONFLICT);
+            }
+        }
+
+        if (!existingContact.getPhoneNumber().equals(contactDetails.getPhoneNumber())) {
+            if (contactRepository.existsByPhoneNumberAndIdNot(contactDetails.getPhoneNumber(), contactId)) {
+                throw new CustomException("Phone number already exists for another contact", HttpStatus.CONFLICT);
             }
         }
 
@@ -82,13 +88,9 @@ public class ContactServiceImp implements ContactService {
                 .user(existingContact.getUser());
 
         if (file != null && !file.isEmpty()) {
-            if (existingContact.getImageName() != null) {
-                s3Service.deleteFile(existingContact.getImageName());
-            }
             String imageUrl = s3Service.uploadFile(file);
             contactBuilder.imageName(imageUrl);
         }
-
 
         ContactEntity updatedContact = contactBuilder.build();
         return contactRepository.save(updatedContact);
@@ -96,8 +98,7 @@ public class ContactServiceImp implements ContactService {
 
     @Override
     public void deleteContact(UUID contactId) {
-        ContactEntity contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));
-        ;
+        ContactEntity contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));;
 
         if (contact.getImageName() != null) {
             s3Service.deleteFile(contact.getImageName());
