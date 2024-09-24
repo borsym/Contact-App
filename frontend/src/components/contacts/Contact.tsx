@@ -31,7 +31,7 @@ const Contact: React.FC<ContactProps> = ({
           alt={`${user.name}'s avatar`}
           className="w-10 h-10 rounded-full mr-4 border"
         />
-        <div>
+        <div className="font-lexenddeca font-normal">
           <h3 className="text-white">{user.name}</h3>
           <p className="text-[#FFFFFF8F]"> {user.phoneNumber}</p>
         </div>
@@ -54,7 +54,7 @@ const Contact: React.FC<ContactProps> = ({
               variant="secondary"
             />
             {isDropdownOpen && (
-              <div className="absolute w-max bg-[#141414] text-white shadow-lg border rounded z-10">
+              <div className="absolute w-max bg-[#141414] text-white shadow-lg border rounded z-10 font-lexenddeca">
                 <ul className="flex flex-col">
                   {menuOptions.map((option, index) => (
                     <li

@@ -1,6 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: "Glysa";
+  src: url("./assets/fonts/Glysa.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Lexend-Deca";
+  src: url("./assets/fonts/LexendDeca-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: "Lexend-Deca", sans-serif;
+}
+
+h1 {
+  font-family: "Glysa", sans-serif;
+  font-size: 32px;
+  line-height: 48px;
+  letter-spacing: 0%;
+}
+
+h2 {
+  font-family: "Glysa", sans-serif;
+  font-size: 24px;
+  line-height: 40px;
+  letter-spacing: 0%;
+}
+
+p,
+span {
+  font-family: "Lexend-Deca", sans-serif;
+  font-weight: normal;
+  letter-spacing: 1%;
+}
+
+body {
+  font-size: 14px;
+  line-height: 20px;
+}
 
 .bg-default {
   background-color: #282828;

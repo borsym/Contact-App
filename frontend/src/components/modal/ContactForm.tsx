@@ -139,7 +139,7 @@ const ContactForm = () => {
           }}
         >
           <div className="min-w-[316px] min-h-[404px] p-6 space-y-5">
-            <h2 className="text-2xl font-semibold text-white mb-6">
+            <h2 className="font-medium text-white mb-6 font-glysa">
               {isEditMode ? "Edit contact" : "Add contact"}
             </h2>
             <div className="flex items-center">

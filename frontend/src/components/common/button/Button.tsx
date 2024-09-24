@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center px-2 py-2 rounded-lg text-white focus:outline-none transition-all ${buttonStyle}`}
+      className={`font-lexenddeca font-normal flex items-center px-2 py-2 rounded-lg text-white focus:outline-none transition-all ${buttonStyle}`}
       type={type}
       disabled={disabled}
     >
