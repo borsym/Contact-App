@@ -131,6 +131,13 @@ const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
     field.handleChange(defaultAvatar);
     setImagePreview(defaultAvatar);
   };
+  const handleCancel = () => {
+    if (isEditMode) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
+    form.reset();
+    closeModal();
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -217,7 +224,7 @@ const ContactForm: React.FC<MockIdProps> = ({ userId }) => {
             <Button
               type="button"
               variant="secondary"
-              onClick={closeModal}
+              onClick={handleCancel}
               label="Cancel"
             />
             <form.Subscribe

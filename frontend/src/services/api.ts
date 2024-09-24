@@ -92,13 +92,13 @@ export const updateContact = async ({
   const formData = new FormData();
   const { imageName, ...contactWithoutImage } = contact;
 
-  const imageToUpload =
-    imageName instanceof File
-      ? imageName
-      : await fetch(defaultAvatar).then((res) => res.blob());
-
-  if (imageToUpload) {
-    formData.append("file", imageToUpload);
+  if (imageName instanceof File) {
+    formData.append("file", imageName);
+  } else if (imageName === null || imageName === defaultAvatar) {
+    const defaultImageBlob = await fetch(defaultAvatar).then((res) =>
+      res.blob()
+    );
+    formData.append("file", defaultImageBlob);
   }
 
   formData.append(
