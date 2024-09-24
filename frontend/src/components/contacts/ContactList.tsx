@@ -16,10 +16,9 @@ const hoverButtons = [
   { icon: <CallIcon />, action: () => console.log("Call") },
 ];
 
-const ContactList: React.FC = () => {
-  const { contactsQuery, deleteContactMutation } = useContacts(
-    "dd3d8e4b-dafd-4b0d-97f9-69d3da1721f3"
-  );
+
+const ContactList: React.FC<MockIdProps> = ({ userId }) => {
+  const { contactsQuery, deleteContactMutation } = useContacts(userId);
   const { openModal } = useModalContext();
 
   const handleDelete = async (contactId: string) => {

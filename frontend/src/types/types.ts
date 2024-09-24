@@ -17,6 +17,10 @@ export interface ButtonProps {
   disabled?: boolean | undefined;
 }
 
+export interface MockIdProps {
+  userId: string;
+}
+
 export interface ContactContextProps {
   isModalVisible: boolean;
   currentContact: UserProps | null;
