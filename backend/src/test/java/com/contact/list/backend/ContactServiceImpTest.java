@@ -40,7 +40,7 @@ class ContactServiceImpTest extends BaseTest {
     void createContact() throws IOException {
         UUID userId = TEST_USER_ID;
         UserEntity user = UserEntity.builder().id(userId).build();
-        ContactEntity contact = TestUtils.createContactEntity(userId, TEST_NAME,TEST_EMAIL,TEST_PHONE);
+        ContactEntity contact = TestUtils.createContactEntity(userId, TEST_NAME, TEST_EMAIL, TEST_PHONE);
         MultipartFile file = TestUtils.createMockMultipartFile();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -58,8 +58,8 @@ class ContactServiceImpTest extends BaseTest {
     @Test
     void getContactsByUserId() {
         UUID userId = UUID.randomUUID();
-        ContactEntity contact1 = TestUtils.createContactEntity(userId, TEST_NAME,TEST_EMAIL,TEST_PHONE);
-        ContactEntity contact2 = TestUtils.createContactEntity(userId, TEST_NAME_2,TEST_EMAIL_2,TEST_PHONE_2);
+        ContactEntity contact1 = TestUtils.createContactEntity(userId, TEST_NAME, TEST_EMAIL, TEST_PHONE);
+        ContactEntity contact2 = TestUtils.createContactEntity(userId, TEST_NAME_2, TEST_EMAIL_2, TEST_PHONE_2);
         List<ContactEntity> contacts = Arrays.asList(contact1, contact2);
 
         when(contactRepository.findByUserId(userId)).thenReturn(contacts);
@@ -75,7 +75,7 @@ class ContactServiceImpTest extends BaseTest {
     @Test
     void getContactById() {
         UUID contactId = UUID.randomUUID();
-        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME_2,TEST_EMAIL_2,TEST_PHONE_2);
+        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME_2, TEST_EMAIL_2, TEST_PHONE_2);
 
         when(contactRepository.findById(contactId)).thenReturn(Optional.of(contact));
 
@@ -88,8 +88,8 @@ class ContactServiceImpTest extends BaseTest {
     @Test
     void updateContact() throws IOException {
         UUID contactId = UUID.randomUUID();
-        ContactEntity existingContact = TestUtils.createContactEntity(contactId, TEST_NAME,TEST_EMAIL,TEST_PHONE);
-        ContactEntity updatedContact = TestUtils.createContactEntity(contactId, TEST_NAME_2,TEST_EMAIL_2,TEST_PHONE_2);
+        ContactEntity existingContact = TestUtils.createContactEntity(contactId, TEST_NAME, TEST_EMAIL, TEST_PHONE);
+        ContactEntity updatedContact = TestUtils.createContactEntity(contactId, TEST_NAME_2, TEST_EMAIL_2, TEST_PHONE_2);
         MultipartFile file = TestUtils.createMockMultipartFile();
 
         when(contactRepository.findById(contactId)).thenReturn(Optional.of(existingContact));
@@ -110,7 +110,7 @@ class ContactServiceImpTest extends BaseTest {
     @Test
     void deleteContact() {
         UUID contactId = UUID.randomUUID();
-        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME,TEST_EMAIL,TEST_PHONE, TEST_IMAGE_NAME);
+        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME, TEST_EMAIL, TEST_PHONE, TEST_IMAGE_NAME);
 
         when(contactRepository.findById(contactId)).thenReturn(Optional.of(contact));
 

@@ -10,8 +10,12 @@ import java.util.UUID;
 
 public interface ContactService {
     List<ContactDTO> getContactsByUserId(UUID userId);
+
     ContactEntity getContactById(UUID contactId);
+
     ContactEntity createContact(UUID userId, ContactEntity contact, MultipartFile file) throws IOException;
+
     ContactEntity updateContact(UUID contactId, ContactEntity contactDetails, MultipartFile file) throws IOException;
+
     void deleteContact(UUID contactId);
 }

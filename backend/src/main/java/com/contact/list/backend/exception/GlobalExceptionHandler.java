@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorObject, ex.getStatus());
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObject> handleGlobalException(Exception ex, WebRequest request) {
         ErrorObject errorObject = ErrorObject.builder().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(ex.getMessage()).timestamp(new Date()).build();

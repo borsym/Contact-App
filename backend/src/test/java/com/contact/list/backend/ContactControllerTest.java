@@ -21,7 +21,7 @@ import static com.contact.list.backend.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class ContactControllerTest extends  BaseTest{
+class ContactControllerTest extends BaseTest {
 
     @Mock
     private ContactServiceImp contactService;
@@ -49,7 +49,7 @@ class ContactControllerTest extends  BaseTest{
     @Test
     void createContact() throws IOException {
         UUID userId = TEST_USER_ID;
-        ContactEntity contact = TestUtils.createContactEntity(userId, TEST_NAME,TEST_EMAIL,TEST_PHONE, TEST_IMAGE_NAME);
+        ContactEntity contact = TestUtils.createContactEntity(userId, TEST_NAME, TEST_EMAIL, TEST_PHONE, TEST_IMAGE_NAME);
         MultipartFile file = TestUtils.createMockMultipartFile();
 
         when(contactService.createContact(userId, contact, file)).thenReturn(contact);
@@ -63,7 +63,7 @@ class ContactControllerTest extends  BaseTest{
     @Test
     void updateContact() throws IOException {
         UUID contactId = UUID.randomUUID();
-        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME,TEST_EMAIL,TEST_PHONE, TEST_IMAGE_NAME);
+        ContactEntity contact = TestUtils.createContactEntity(contactId, TEST_NAME, TEST_EMAIL, TEST_PHONE, TEST_IMAGE_NAME);
         MultipartFile file = TestUtils.createMockMultipartFile();
 
         when(contactService.updateContact(contactId, contact, file)).thenReturn(contact);

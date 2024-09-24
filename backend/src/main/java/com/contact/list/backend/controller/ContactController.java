@@ -25,7 +25,8 @@ public class ContactController {
         List<ContactDTO> contacts = contactService.getContactsByUserId(userId);
         return ResponseEntity.ok(contacts);
     }
-    @PostMapping(value = "/users/{userId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+
+    @PostMapping(value = "/users/{userId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ContactEntity> createContact(@PathVariable UUID userId,
                                                        @Valid @RequestPart("file") MultipartFile file,
                                                        @Valid @RequestPart("contact") ContactEntity contact) throws IOException {
@@ -33,7 +34,7 @@ public class ContactController {
         return ResponseEntity.ok(createdContact);
     }
 
-    @PutMapping(value = "/{contactId}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{contactId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ContactEntity> updateContact(@PathVariable UUID contactId, @RequestPart("file") MultipartFile file, @Valid @RequestPart("contact") ContactEntity contact) throws IOException {
         ContactEntity updatedContact = contactService.updateContact(contactId, contact, file);
         return ResponseEntity.ok(updatedContact);

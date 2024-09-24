@@ -40,13 +40,13 @@ public class UserController {
     }
 
 
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<UserEntity> createUser(@Valid  @RequestPart("user") UserEntity user, @RequestPart("file") MultipartFile file) throws IOException {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<UserEntity> createUser(@Valid @RequestPart("user") UserEntity user, @RequestPart("file") MultipartFile file) throws IOException {
         UserEntity createdUser = userService.createUser(user, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UserEntity> updateUser(@PathVariable UUID userId, @RequestPart("file") MultipartFile file, @Valid @RequestPart("user") UserEntity user) throws IOException {
         UserEntity updatedContact = userService.updateUser(userId, user, file);
         return ResponseEntity.ok(updatedContact);

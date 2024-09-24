@@ -46,7 +46,7 @@ class UserControllerTest extends BaseTest {
     @Test
     void getUser() {
         UUID userId = TEST_USER_ID;
-        UserDTO user =  TestUtils.createUserDTO(userId, TEST_NAME, TEST_EMAIL, TEST_PHONE);
+        UserDTO user = TestUtils.createUserDTO(userId, TEST_NAME, TEST_EMAIL, TEST_PHONE);
 
         when(userService.getUserById(userId)).thenReturn(user);
 

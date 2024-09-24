@@ -59,10 +59,10 @@ public class UserServiceImp implements UserService {
     @Override
     public UserEntity updateUser(UUID userId, UserEntity userDetails, MultipartFile file) throws IOException {
         UserEntity existingUser = userRepository.findById(userId)
-            .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
 
-        if (!existingUser.getEmail().equals(userDetails.getEmail()) || 
-            !existingUser.getPhoneNumber().equals(userDetails.getPhoneNumber())) {
+        if (!existingUser.getEmail().equals(userDetails.getEmail()) ||
+                !existingUser.getPhoneNumber().equals(userDetails.getPhoneNumber())) {
             if (userRepository.existsByEmailOrPhoneNumberAndIdNot(userDetails.getEmail(), userDetails.getPhoneNumber(), userId)) {
                 throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
             }
@@ -90,7 +90,7 @@ public class UserServiceImp implements UserService {
     @Override
     public void deleteUser(UUID userId) {
         UserEntity user = userRepository.findById(userId)
-            .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException("User not found", HttpStatus.NOT_FOUND));
 
         if (user.getImageName() != null) {
             s3Service.deleteFile(user.getImageName());
