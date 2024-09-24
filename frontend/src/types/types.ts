@@ -45,6 +45,7 @@ export interface ContactProps {
 
 export interface GridItemProps {
   children?: React.ReactNode;
+  className?: string | undefined;
 }
 
 export interface ModalProps {
