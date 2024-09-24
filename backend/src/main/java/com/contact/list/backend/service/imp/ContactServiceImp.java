@@ -1,6 +1,7 @@
 package com.contact.list.backend.service.imp;
 
 import com.contact.list.backend.dto.ContactDTO;
+import com.contact.list.backend.exception.CustomException;
 import com.contact.list.backend.model.ContactEntity;
 import com.contact.list.backend.model.UserEntity;
 import com.contact.list.backend.repository.ContactRepository;
@@ -9,6 +10,8 @@ import com.contact.list.backend.service.ContactService;
 import com.contact.list.backend.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +32,10 @@ public class ContactServiceImp implements ContactService {
     public ContactEntity createContact(UUID userId, ContactEntity contact, MultipartFile file) throws IOException {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (contactRepository.existsByEmailOrPhoneNumber(contact.getEmail(), contact.getPhoneNumber())) {
+            throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
+        }
 
         contact.setUser(user);
 
@@ -60,6 +67,13 @@ public class ContactServiceImp implements ContactService {
     public ContactEntity updateContact(UUID contactId, ContactEntity contactDetails, MultipartFile file) throws IOException {
         ContactEntity existingContact = getContactById(contactId);
 
+        if (!existingContact.getEmail().equals(contactDetails.getEmail()) || 
+            !existingContact.getPhoneNumber().equals(contactDetails.getPhoneNumber())) {
+            if (contactRepository.existsByEmailOrPhoneNumber(contactDetails.getEmail(), contactDetails.getPhoneNumber())) {
+                throw new CustomException("Email or phone number already exists", HttpStatus.CONFLICT);
+            }
+        }
+
         ContactEntity.ContactEntityBuilder contactBuilder = ContactEntity.builder()
                 .id(existingContact.getId())
                 .name(contactDetails.getName())
@@ -68,23 +82,24 @@ public class ContactServiceImp implements ContactService {
                 .user(existingContact.getUser());
 
         if (file != null && !file.isEmpty()) {
+            if (existingContact.getImageName() != null) {
+                s3Service.deleteFile(existingContact.getImageName());
+            }
             String imageUrl = s3Service.uploadFile(file);
             contactBuilder.imageName(imageUrl);
-
-            // TODO remove previous image.
         }
 
-        // Build the updated contact entity and save it
+
         ContactEntity updatedContact = contactBuilder.build();
         return contactRepository.save(updatedContact);
     }
 
     @Override
     public void deleteContact(UUID contactId) {
-        ContactEntity user = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));;
+        ContactEntity contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));;
 
-        if (user.getImageName() != null) {
-            s3Service.deleteFile(user.getImageName());
+        if (contact.getImageName() != null) {
+            s3Service.deleteFile(contact.getImageName());
         }
 
         contactRepository.deleteById(contactId);
